@@ -15,9 +15,10 @@ class CreateGroupMembersTable extends Migration
     {
         Schema::create('group_members', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('fb_group_id', 30);
-            $table->string('member_name', 150);
-            $table->date('join_date');
+            $table->string('fb_group_id', 50)->nullable();
+            $table->string('fb_member_id', 50)->nullable();
+            $table->string('member_name', 150)->nullable();
+            $table->date('join_date')->nullable();
             $table->timestamps();
         });
     }
