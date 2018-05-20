@@ -12,6 +12,8 @@ class GroupMember extends Model
         'fb_group_id',
         'fb_member_id',
         'member_name',
+        'activity',
+        'kicked',
         'join_date'
     ];
 }
