@@ -12,7 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Route::resource('/member/crawl', 'MemberCrawlerController');
+Route::get('/member/mark', 'MemberCrawlerController@markKickedView');
+Route::post('/member/mark', 'MemberCrawlerController@markKicked');

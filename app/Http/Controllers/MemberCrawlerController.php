@@ -33,7 +33,12 @@ class MemberCrawlerController extends Controller
      */
     public function create()
     {
-        //
+        $members = $this->member->kickable();
+
+        $data = [
+            'members'  => $members,
+        ];
+        return view('member_management', $data);
     }
 
     /**
@@ -166,7 +171,9 @@ class MemberCrawlerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = $this->member->kickList();
+
+        return view('kick_list', ['members' => $data]);
     }
 
     /**
@@ -178,7 +185,13 @@ class MemberCrawlerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $this->member->findOrFail($id);
+
+        $data->update([
+            'activity' => $request->get('verdict')
+        ]);
+
+        return $data;
     }
 
     /**
@@ -190,5 +203,32 @@ class MemberCrawlerController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function markKicked(Request $request)
+    {
+        $data = $request->get('text');
+
+        $data = preg_split('/\r\n|\r|\n/', $data);
+
+        $searches = [];
+        foreach ($data as $key => $value) {
+            $value = trim($value);
+            $searches[] = $value;
+            $member = $this->member->findMember($value);
+
+            if ($member !== NULL) {
+                $member->update([
+                    'kicked'    => 1,
+                ]);
+            }
+        }
+
+        echo json_encode($searches);
+    }
+
+    public function markKickedView()
+    {
+        return view('mark_kick');
     }
 }
